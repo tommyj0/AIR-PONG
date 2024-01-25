@@ -1,0 +1,82 @@
+#pragma once
+#include "vec2.h"
+#include "SFML/Graphics.h"
+
+////////////////////////////////////////////////////////////
+/// \brief describes movement and rotation of an entity
+/// 
+/// \param pos 2D position
+/// \param vel 2D velocity
+/// \param angle float angle in rad
+////////////////////////////////////////////////////////////
+typedef struct 
+{
+  vec2 pos;
+  vec2 vel;
+  float angle;
+} CTransform;
+
+////////////////////////////////////////////////////////////
+/// \brief shape for circle
+///
+/// \param circle something
+////////////////////////////////////////////////////////////
+typedef struct 
+{
+  sfShape * shape;
+  sfCircleShape * circle;
+  sfRectangleShape * rect;
+} CShape;
+
+////////////////////////////////////////////////////////////
+/// \brief radius for circle collision
+/// 
+/// \param radius
+////////////////////////////////////////////////////////////
+typedef struct 
+{
+  float radius;
+} CCollision;
+
+////////////////////////////////////////////////////////////
+/// \brief score for entity
+/// 
+/// \param score
+////////////////////////////////////////////////////////////
+typedef struct 
+{
+  int score;
+} CScore;
+
+////////////////////////////////////////////////////////////
+/// \brief lifespan tracker
+/// 
+/// \param total
+/// \param remaining
+////////////////////////////////////////////////////////////
+typedef struct
+{
+  int total;
+  int remaining;
+} CLifespan;
+
+////////////////////////////////////////////////////////////
+/// \brief input of entity
+/// 
+////////////////////////////////////////////////////////////
+typedef struct 
+{
+  bool up;
+  bool down;
+  bool left;
+  bool right;
+  bool shoot;
+} CInput;
+
+int com_CreateRectangle(CShape * shape, vec2 pos, int width, int height, sfColor FillColor);
+
+int com_CreateCircle(CShape * shape, vec2 pos, float radius, int points, sfColor FillColor);
+
+
+
+
