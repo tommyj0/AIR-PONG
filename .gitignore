@@ -47,6 +47,7 @@
 *.vcxproj.filters
 *.sln
 bin/
+x64/
 
 # Kernel Module Compile Results
 *.mod*
