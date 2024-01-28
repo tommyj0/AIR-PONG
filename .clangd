@@ -1,3 +1,0 @@
-CompileFlags:
-  Add: [-I C:/Dev/CSFML-2.5.1/include/, -I src/]
-

@@ -48,6 +48,8 @@
 *.sln
 bin/
 x64/
+.vs/
+.clangd
 
 # Kernel Module Compile Results
 *.mod*
