@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "vec2.h"
-#include "game.h"
+#include "Vec2.h"
+#include "Game.h"
 
 
 int main()

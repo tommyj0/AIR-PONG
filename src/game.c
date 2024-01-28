@@ -1,10 +1,11 @@
-#include "game.h"
-#include "entity.h"
+#include "Game.h"
+#include "Entity.h"
 #include <errno.h>
 #include <stdio.h>
 
 sfRenderWindow * m_window;
 size_t m_currentFrame = 0;
+bool m_running = true;
 Entity * m_player;
 
 sfColor m_white = {255,255,255,255};
@@ -17,6 +18,7 @@ void Render();
 void Destroy();
 void spawnPlayer();
 void Movement();
+void UserInput();
 
 void Init()
 {
@@ -24,47 +26,34 @@ void Init()
   m_window = sfRenderWindow_create(mode, "SFML window", sfDefaultStyle, NULL);
   sfRenderWindow_setFramerateLimit(m_window,60);
   ent_Init();
+  ent_Add("enemy");
+  spawnPlayer();
+  ent_Update();
 }
 
 
 void g_Run()
 {
   Init();
-  
-  ent_Add("enemy");
-  spawnPlayer();
-  ent_Update();
- 
 
-  sfEvent Event;
-
-  while (sfRenderWindow_isOpen(m_window))
+  while (m_running)
   {
     Render();
     Movement();
-    while (sfRenderWindow_pollEvent(m_window, &Event)) 
-    {
-      if (Event.type == sfEvtClosed)
-      {
-        Destroy();
-      }
-    }
+    UserInput();
+    m_currentFrame++;
   }
+  Destroy();
 }
 
 void spawnPlayer()
 {
-  m_player = ent_Add("player");
-  m_player->cScore = malloc(sizeof(CScore));
-  *m_player->cScore = (CScore){0};
-  m_player->cTransform = malloc(sizeof(CTransform));
-  *m_player->cTransform = (CTransform){(vec2){1.0,1.0}, (vec2){1.0,1.0}, 0.0};
-  m_player->cCollision = malloc(sizeof(CCollision));
-  *m_player->cCollision = (CCollision){0};
-  m_player->cInput = malloc(sizeof(CInput));
-  *m_player->cInput = (CInput){0};
-  m_player->cShape = malloc(sizeof(CShape));
-  com_CreateCircle(m_player->cShape, (vec2){100,100}, 32, 8, m_blue);
+  m_player = ent_Add("player"); 
+  m_player->cScore = com_CreateScore(0);
+  m_player->cTransform = com_CreateTransform((Vec2){0,0},(Vec2){0,0},0);
+  m_player->cCollision = com_CreateCollision(32);
+  m_player->cInput = com_CreateInput();
+  m_player->cShape = com_CreateCircle((Vec2){100,100}, 32, 8, m_blue);
 }
 
 void Render()
@@ -77,8 +66,7 @@ void Render()
   {
     e = m_entities + i;
     if (e->cShape == NULL || e->cTransform == NULL) continue;
-    sfShape_setPosition(e->cShape->shape,(sfVector2f){e->cTransform->pos.x,e->cTransform->pos.x});
-    sfShape_setRotation(e->cShape->shape,e->cTransform->angle);
+    sfShape_setPosition(e->cShape->shape,(sfVector2f){e->cTransform->pos.x,e->cTransform->pos.y});
     sfRenderWindow_drawCircleShape(m_window,e->cShape->circle, NULL);
   }
   sfRenderWindow_display(m_window);
@@ -92,15 +80,114 @@ void Destroy()
 
 void Movement()
 {
+  m_player->cTransform->vel = (Vec2){0,0};
+
+  if (m_player->cInput->up)
+  {
+    m_player->cTransform->vel.y = -5;
+  }
+  if (m_player->cInput->left)
+  {
+    m_player->cTransform->vel.x = -5;
+  }
+  if (m_player->cInput->down)
+  {
+    m_player->cTransform->vel.y = 5;
+  }
+  if (m_player->cInput->right)
+  {
+    m_player->cTransform->vel.x = 5;
+  }
   Entity * m_entities = ent_GetEntities();
   Entity * e;
   
   for (int i = 0; i < ent_GetTotalEntities(); ++i)
   {
     e = m_entities + i;
-    if (e->cShape == NULL || e->cTransform == NULL) continue;
+    if (e->cTransform == NULL) continue;
     e->cTransform->pos.x += e->cTransform->vel.x;
     e->cTransform->pos.y += e->cTransform->vel.y;
     e->cTransform->angle += 1.0f;
+  }
+}
+
+void UserInput()
+{
+  sfEvent event;
+  while(sfRenderWindow_pollEvent(m_window, &event))
+  {
+    if (event.type == sfEvtClosed)
+    {
+      m_running = false;
+    }
+
+    if (event.type == sfEvtMouseButtonPressed)
+    {
+      if (event.mouseButton.button == sfMouseLeft)
+      {
+        printf("Left mouse button pressed\n");
+        // spawnBullet(m_player, Vec2(event.mouseButton.x, event.mouseButton.y));
+      }
+      if (event.mouseButton.button == sfMouseRight)
+      {
+        printf("Right mouse button pressed\n");
+        // spawnSpecialWeapon(m_player);
+      }
+    }
+    if (event.type == sfEvtKeyPressed)
+    {
+      switch (event.key.code)
+      {
+        case sfKeyW:
+          printf("W pressed\n");
+          m_player->cInput->up = true;
+          break;
+        case sfKeyA:
+          printf("A pressed\n");
+          m_player->cInput->left = true;
+          break;
+        case sfKeyS:
+          printf("S pressed\n");
+          m_player->cInput->down = true;
+          break;
+        case sfKeyD:
+          printf("D pressed\n");
+          m_player->cInput->right = true;
+          break;
+        case sfKeySpace:
+          printf("Space pressed\n");
+          // setPaused(!m_paused);
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (event.type == sfEvtKeyReleased)
+    {
+      switch (event.key.code)
+      {
+        case sfKeyW:
+          printf("W released\n");
+          m_player->cInput->up = false;
+          break;
+        case sfKeyA:
+          printf("A released\n");
+          m_player->cInput->left = false; 
+          break;
+        case sfKeyS:
+          printf("S released\n");
+          m_player->cInput->down = false;
+          break;
+        case sfKeyD:
+          printf("D released\n");
+          m_player->cInput->right = false;
+          break;
+
+        default:
+          break;
+
+      }
+    }
   }
 }

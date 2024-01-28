@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "Entity.h"
 #include <stdio.h>
 
 EntityManager m_entityManager = { 0 };
@@ -13,20 +13,18 @@ void ent_Init()
 
 Entity * ent_Add(const char * tag)
 {
-  // TODO: maybe dont malloc this 
-  Entity * entity = malloc(sizeof(Entity));
-  entity->active = true;
-  entity->cTransform = NULL;
-  entity->cShape = NULL;
-  entity->cCollision = NULL;
-  entity->cScore = NULL;
-  entity->cLifespan = NULL;
-  entity->cInput = NULL;
-  strcpy(entity->tag, tag);
-  m_entityManager.entitiesToAdd[m_entities_to_add++] = *entity;
-  free(entity);
+  Entity entity;
+  entity.active = true;
+  entity.cTransform = NULL;
+  entity.cShape = NULL;
+  entity.cCollision = NULL;
+  entity.cScore = NULL;
+  entity.cLifespan = NULL;
+  entity.cInput = NULL;
+  entity.cBoundingBox = NULL;
+  strcpy_s(entity.tag,sizeof(tag), tag);
+  m_entityManager.entitiesToAdd[m_entities_to_add++] = entity;
   return (m_entityManager.entitiesToAdd + m_entities_to_add - 1);
-  // return entity;
 }
 
 void removeDeadEntities(Entity * entity)
@@ -123,6 +121,7 @@ void ent_Destroy()
     free(e->cInput);
     free(e->cScore);
     free(e->cLifespan);
+    free(e->cBoundingBox);
   }
   free(m_entityManager.entities);
   free(m_entityManager.entitiesToAdd);

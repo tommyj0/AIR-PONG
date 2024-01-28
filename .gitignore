@@ -42,6 +42,11 @@
 *.idb
 *.pdb
 *.json
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+bin/
 
 # Kernel Module Compile Results
 *.mod*

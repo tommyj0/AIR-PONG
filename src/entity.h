@@ -1,6 +1,6 @@
 #pragma once
-#include "vec2.h"
-#include "components.h"
+#include "Vec2.h"
+#include "Components.h"
 #include <stdlib.h>
 #include <string.h>
 #define MAX_ENTITIES 300
@@ -16,6 +16,7 @@ typedef struct
   CScore* cScore;
   CLifespan* cLifespan;
   CInput* cInput;
+  CBoundingBox * cBoundingBox;
 } Entity;
 
 typedef struct 
@@ -41,6 +42,8 @@ Entity * ent_Add(const char * tag);
 ////////////////////////////////////////////////////////////
 /// \brief returns an array of entities with given tag
 /// 
+/// \param tag string 
+/// \param size pass size_t* to get the array length
 ////////////////////////////////////////////////////////////
 Entity * ent_GetEntitiesByTag(const char* tag, size_t * size);
 

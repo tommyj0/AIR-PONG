@@ -1,0 +1,5 @@
+﻿  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 23 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  2D-Engine.vcxproj -> C:\Dev\VS\COMP4300\2D-Engine\x64\Release\2D-Engine.exe

@@ -1,0 +1,20 @@
+﻿  Components.c
+  Entity.c
+C:\Dev\VS\COMP4300\2D-Engine\src\Components.c(48,47): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Dev\VS\COMP4300\2D-Engine\src\Components.c(48,53): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Game.c
+C:\Dev\VS\COMP4300\2D-Engine\src\Entity.c(25,3): error C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  main.c
+  Physics.c
+C:\Dev\VS\COMP4300\2D-Engine\src\Physics.c(5,16): error C2231: '.pos': left operand points to 'struct', use '->'
+C:\Dev\VS\COMP4300\2D-Engine\src\Physics.c(6,16): error C2231: '.pos': left operand points to 'struct', use '->'
+C:\Dev\VS\COMP4300\2D-Engine\src\Physics.c(7,17): error C2231: '.size': left operand points to 'struct', use '->'
+C:\Dev\VS\COMP4300\2D-Engine\src\Physics.c(8,17): error C2231: '.size': left operand points to 'struct', use '->'
+C:\Dev\VS\COMP4300\2D-Engine\src\Physics.c(10,28): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+C:\Dev\VS\COMP4300\2D-Engine\src\Physics.c(10,50): warning C4244: 'function': conversion from 'float' to 'int', possible loss of data
+C:\Dev\VS\COMP4300\2D-Engine\src\Physics.c(10,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Dev\VS\COMP4300\2D-Engine\src\Physics.c(10,39): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Vec2.c
+C:\Dev\VS\COMP4300\2D-Engine\src\Vec2.c(29,10): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+C:\Dev\VS\COMP4300\2D-Engine\src\Vec2.c(51,10): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Generating Code...

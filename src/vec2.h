@@ -6,27 +6,27 @@ typedef struct
 {
   float x;
   float y;
-} vec2;
+} Vec2;
 
-vec2 vec2_add(vec2 a, vec2 b);
+Vec2 Vec2_add(Vec2 a, Vec2 b);
 
-vec2 vec2_sub(vec2 a, vec2 b);
+Vec2 Vec2_sub(Vec2 a, Vec2 b);
 
-vec2 vec2_mul(vec2 a, float b);
+Vec2 Vec2_mul(Vec2 a, float b);
 
-vec2 vec2_div(vec2 a, float b);
+Vec2 Vec2_div(Vec2 a, float b);
 
-float vec2_mag(vec2 a);
+float Vec2_mag(Vec2 a);
 
-vec2 vec2_norm(vec2 a);
+Vec2 Vec2_norm(Vec2 a);
 
-float vec2_dot(vec2 a, vec2 b);
+float Vec2_dot(Vec2 a, Vec2 b);
 
-float vec2_dist(vec2 a, vec2 b);
+float Vec2_dist(Vec2 a, Vec2 b);
 
-float vec2_angle(vec2 a);
+float Vec2_angle(Vec2 a);
 
-bool vec2_eq(vec2 a, vec2 b);
+bool Vec2_eq(Vec2 a, Vec2 b);
 
-bool vec2_neq(vec2 a, vec2 b);
+bool Vec2_neq(Vec2 a, Vec2 b);
 

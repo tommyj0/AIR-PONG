@@ -1,5 +1,5 @@
 #pragma once
-#include "vec2.h"
+#include "Vec2.h"
 #include "SFML/Graphics.h"
 
 ////////////////////////////////////////////////////////////
@@ -9,10 +9,11 @@
 /// \param vel 2D velocity
 /// \param angle float angle in rad
 ////////////////////////////////////////////////////////////
-typedef struct 
+typedef struct
 {
-  vec2 pos;
-  vec2 vel;
+  Vec2 pos;
+  Vec2 prevpos;
+  Vec2 vel;
   float angle;
 } CTransform;
 
@@ -71,11 +72,26 @@ typedef struct
   bool left;
   bool right;
   bool shoot;
+  bool canShoot;
+  bool canJump;
 } CInput;
 
-int com_CreateRectangle(CShape * shape, vec2 pos, int width, int height, sfColor FillColor);
+typedef struct   
+{
+  Vec2 size;
+} CBoundingBox;
 
-int com_CreateCircle(CShape * shape, vec2 pos, float radius, int points, sfColor FillColor);
+CTransform * com_CreateTransform(Vec2 pos, Vec2 vel, float angle);
+
+CInput * com_CreateInput();
+
+CScore *  com_CreateScore(int initVal);
+
+CCollision * com_CreateCollision(float rad);
+
+CShape * com_CreateRectangle(Vec2 pos, int width, int height, sfColor FillColor);
+
+CShape * com_CreateCircle(Vec2 pos, float radius, int points, sfColor FillColor);
 
 
 
