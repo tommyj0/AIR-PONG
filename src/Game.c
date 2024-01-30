@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "Entity.h"
+#include "EntityManager.h"
 #include <errno.h>
 #include <stdio.h>
 
@@ -14,21 +14,21 @@ sfColor m_red   = {255,0,0,255};
 sfColor m_green = {0,255,0,255};
 sfColor m_blue  = {0,0,255,255};
 
-void Render();
-void Destroy();
-void spawnPlayer();
-void Movement();
-void UserInput();
+static void Render();
+static void Destroy();
+static void spawnPlayer();
+static void Movement();
+static void UserInput();
+static void Init();
 
 void Init()
 {
-  sfVideoMode mode  = {800,600,32};
+  sfVideoMode mode = {800,600,32};
   m_window = sfRenderWindow_create(mode, "SFML window", sfDefaultStyle, NULL);
   sfRenderWindow_setFramerateLimit(m_window,60);
-  ent_Init();
-  ent_Add("enemy");
+  em_Add("enemy");
   spawnPlayer();
-  ent_Update();
+  em_Update();
 }
 
 
@@ -48,21 +48,22 @@ void g_Run()
 
 void spawnPlayer()
 {
-  m_player = ent_Add("player"); 
+  m_player = em_Add("player"); 
   m_player->cScore = com_CreateScore(0);
-  m_player->cTransform = com_CreateTransform((Vec2){0,0},(Vec2){0,0},0);
+  m_player->cTransform = com_CreateTransform((Vec2) { 0, 0 }, (Vec2) { 0, 0 }, 0);
   m_player->cCollision = com_CreateCollision(32);
   m_player->cInput = com_CreateInput();
-  m_player->cShape = com_CreateCircle((Vec2){100,100}, 32, 8, m_blue);
+  m_player->cShape = com_CreateCircle((Vec2) { 100, 100 }, 32.0, 8, m_blue, 2.0, m_red);
+  m_player->cBoundingBox = com_CreateBounding((Vec2) { 64, 64 });
 }
 
 void Render()
 {
   sfRenderWindow_clear(m_window, m_black);
-  Entity * m_entities = ent_GetEntities();
+  Entity * m_entities = em_GetEntities();
   Entity * e;
 
-  for (int i = 0; i < ent_GetTotalEntities(); ++i)
+  for (int i = 0; i < em_GetTotalEntities(); ++i)
   {
     e = m_entities + i;
     if (e->cShape == NULL || e->cTransform == NULL) continue;
@@ -75,7 +76,7 @@ void Render()
 void Destroy()
 {
   sfRenderWindow_destroy(m_window);
-  ent_Destroy();
+  em_Destroy();
 }
 
 void Movement()
@@ -98,10 +99,11 @@ void Movement()
   {
     m_player->cTransform->vel.x = 5;
   }
-  Entity * m_entities = ent_GetEntities();
+
+  Entity * m_entities = em_GetEntities();
   Entity * e;
   
-  for (int i = 0; i < ent_GetTotalEntities(); ++i)
+  for (int i = 0; i < em_GetTotalEntities(); ++i)
   {
     e = m_entities + i;
     if (e->cTransform == NULL) continue;

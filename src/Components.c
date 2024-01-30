@@ -1,17 +1,17 @@
 #include "Components.h"
 #include "Entity.h"
-#include <stdlib.h>
+#include "Utils.h"
 
 CScore *  com_CreateScore(int initVal)
 {
-  CScore * score = malloc(sizeof(CScore));
+  CScore * score = safe_malloc(sizeof(CScore));
   score->score = initVal;
   return score;
 }
 
 CInput * com_CreateInput()
 {
-  CInput * input = malloc(sizeof(CInput));
+  CInput * input = safe_malloc(sizeof(CInput));
   input->up = false;
   input->down = false;
   input->left = false;
@@ -24,25 +24,25 @@ CInput * com_CreateInput()
 
 CCollision * com_CreateCollision(float rad)
 {
-  CCollision * col = malloc(sizeof(CCollision));
+  CCollision * col = safe_malloc(sizeof(CCollision));
   col->radius = rad;
   return col;
 }
 
 CTransform * com_CreateTransform(Vec2 pos, Vec2 vel, float angle)
 {
-  CTransform * transform = malloc(sizeof(CTransform));
-  transform->pos = (Vec2){0,0};
+  CTransform * transform = safe_malloc(sizeof(CTransform));
+  transform->pos = pos;
   transform->prevpos = (Vec2){0,0};
-  transform->vel = (Vec2){0,0};
-  transform->angle = 0;
+  transform->vel = vel;
+  transform->angle = angle;
   return transform;
 
 }
 
-CShape * com_CreateRectangle(Vec2 pos, int width, int height, sfColor FillColor)
+CShape * com_CreateRectangle(Vec2 pos, float width, float height, sfColor FillColor)
 {
-  CShape * shape = malloc(sizeof(CShape));
+  CShape * shape = safe_malloc(sizeof(CShape));
   sfRectangleShape * rect = sfRectangleShape_create();
   sfRectangleShape_setPosition(rect, (sfVector2f){pos.x,pos.y});
   sfRectangleShape_setSize(rect, (sfVector2f){width,height});
@@ -51,15 +51,24 @@ CShape * com_CreateRectangle(Vec2 pos, int width, int height, sfColor FillColor)
   return shape;
 }
 
-CShape * com_CreateCircle(Vec2 pos, float radius, int points, sfColor FillColor)
+CShape * com_CreateCircle(Vec2 pos, float radius, int points, sfColor FillColor, float thickness, sfColor OutColor)
 {
-  CShape * shape = malloc(sizeof(CShape));
+  CShape * shape = safe_malloc(sizeof(CShape));
   sfCircleShape * circ = sfCircleShape_create();
   sfCircleShape_setPosition(circ, (sfVector2f){pos.x,pos.y});
   sfCircleShape_setRadius(circ,radius);
   sfCircleShape_setFillColor(circ,FillColor);
   sfCircleShape_setPointCount(circ, points);
+  sfCircleShape_setOutlineThickness(circ, thickness);
+  sfCircleShape_setOutlineColor(circ, OutColor);
   *shape = (CShape){(sfShape*)circ,circ,0};
 
   return shape;
+}
+
+CBoundingBox * com_CreateBounding(Vec2 size)
+{
+  CBoundingBox * bounds = safe_malloc(sizeof(CBoundingBox));
+  bounds->size = size;
+  return bounds;
 }

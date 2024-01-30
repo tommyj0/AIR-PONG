@@ -89,10 +89,8 @@ CScore *  com_CreateScore(int initVal);
 
 CCollision * com_CreateCollision(float rad);
 
-CShape * com_CreateRectangle(Vec2 pos, int width, int height, sfColor FillColor);
+CShape * com_CreateRectangle(Vec2 pos, float width, float height, sfColor FillColor);
 
-CShape * com_CreateCircle(Vec2 pos, float radius, int points, sfColor FillColor);
+CShape * com_CreateCircle(Vec2 pos, float radius, int points, sfColor FillColor, float thickness, sfColor OutColor);
 
-
-
-
+CBoundingBox * com_CreateBounding(Vec2 size);
