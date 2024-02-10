@@ -22,19 +22,13 @@ CInput * com_CreateInput()
   return input;
 }
 
-CCollision * com_CreateCollision(float rad)
-{
-  CCollision * col = safe_malloc(sizeof(CCollision));
-  col->radius = rad;
-  return col;
-}
-
 CTransform * com_CreateTransform(Vec2 pos, Vec2 vel, float angle)
 {
   CTransform * transform = safe_malloc(sizeof(CTransform));
   transform->pos = pos;
-  transform->prevpos = (Vec2){0,0};
+  transform->prevpos = (Vec2){0};
   transform->vel = vel;
+  transform->scale = (Vec2){0};
   transform->angle = angle;
   return transform;
 

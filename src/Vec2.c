@@ -60,3 +60,13 @@ bool Vec2_neq(Vec2 a, Vec2 b)
 {
   return a.x != b.x || a.y != b.y;
 }
+
+Vec2 Vec2_setRotate(Vec2 a, float angle)
+{
+  return Vec2_mul((Vec2) { cos(angle), sin(angle) }, Vec2_mag(a));
+}
+
+Vec2 Vec2_Polar(float mag, float angle)
+{
+  return (Vec2) { mag * cosf(angle), mag * sinf(angle) };
+}

@@ -1,4 +1,5 @@
 #pragma once
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdbool.h>
 
@@ -30,3 +31,6 @@ bool Vec2_eq(Vec2 a, Vec2 b);
 
 bool Vec2_neq(Vec2 a, Vec2 b);
 
+Vec2 Vec2_setRotate(Vec2 a, float angle);
+
+Vec2 Vec2_Polar(float mag, float angle);

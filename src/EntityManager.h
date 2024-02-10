@@ -4,8 +4,10 @@
 
 typedef struct
 {
+  
   Entity * entities;
   Entity * entitiesToAdd;
+  Entity * entitiesToPass;
   int total;
 } EntityManager;
 
@@ -14,23 +16,21 @@ typedef struct
 ////////////////////////////////////////////////////////////
 /// \brief add entity to manager
 /// 
-/// \param tag string 
 ////////////////////////////////////////////////////////////
-Entity * em_Add(const char * tag);
+Entity * em_Add(eEntitiesType id, eLevelEntities tag);
 
 ////////////////////////////////////////////////////////////
 /// \brief returns an array of entities with given tag
 /// 
-/// \param tag string 
-/// \param size pass size_t* to get the array length
+/// \param size - pass size_t* to get the array length
 ////////////////////////////////////////////////////////////
-Entity * em_GetEntitiesByTag(const char * tag, size_t * size);
+Entity * em_GetEntitiesByTag(eLevelEntities tag);
 
 ////////////////////////////////////////////////////////////
 /// \brief returns an array of entities in given ID range
 /// 
 ////////////////////////////////////////////////////////////
-Entity * em_GetEntitiesById(int id1, int id2, size_t * size);
+Entity * em_GetEntitiesById(eEntitiesType id);
 
 ////////////////////////////////////////////////////////////
 /// \brief returns array of all entities
@@ -43,6 +43,13 @@ Entity * em_GetEntities();
 /// 
 ////////////////////////////////////////////////////////////
 int em_GetTotalEntities();
+
+////////////////////////////////////////////////////////////
+/// \brief returns number of entities passed by one of the
+/// Get...By... functions
+/// 
+////////////////////////////////////////////////////////////
+size_t em_GetPassedCount();
 
 void em_Update();
 

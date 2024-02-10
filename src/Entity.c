@@ -7,12 +7,12 @@ void ent_Destroy(Entity * a)
   a->active = false;
 }
 
-int ent_GetId(Entity * a) 
+eEntitiesType ent_GetId(Entity * a) 
 {
   return a->id;
 }
 
-const char * ent_GetTag(Entity * a)
+eLevelEntities ent_GetTag(Entity * a)
 {
   return a->tag;
 }

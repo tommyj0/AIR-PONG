@@ -5,39 +5,41 @@
 
 EntityManager m_entityManager;
 size_t m_entities_to_add;
+size_t m_passed_count;
 
-static void Init();
 
-void Init()
+static void Init()
 {
   m_entities_to_add = 0;
   m_entityManager.total = 0;
   m_entityManager.entities = safe_malloc(sizeof(Entity) * MAX_ENTITIES);
   m_entityManager.entitiesToAdd = safe_malloc(sizeof(Entity) * MAX_ENTITIES);
+  m_entityManager.entitiesToPass = safe_malloc(sizeof(Entity) * MAX_ENTITIES);
+
 }
 
-Entity * em_Add(const char * tag)
+Entity * em_Add(eEntitiesType id, eLevelEntities tag)
 {
   if (m_entityManager.entities == NULL || m_entityManager.entitiesToAdd == NULL)
   {
     Init();
   }
-  Entity * entity = safe_malloc(sizeof(Entity));
+  Entity e;
+  Entity * entity = &e;
   entity->active = true;
   entity->cTransform = NULL;
   entity->cShape = NULL;
-  entity->cCollision = NULL;
   entity->cScore = NULL;
   entity->cLifespan = NULL;
   entity->cInput = NULL;
   entity->cBoundingBox = NULL;
-  strcpy_s(entity->tag,sizeof(entity->tag), tag);
+  entity->tag = tag; 
+  entity->id = id;
   m_entityManager.entitiesToAdd[m_entities_to_add++] = *entity;
-  free(entity);
   return (m_entityManager.entitiesToAdd + m_entities_to_add - 1);
 }
 
-void removeDeadEntities(Entity * entity)
+static void removeDeadEntities()
 {
   for (int i = 0; i < m_entityManager.total; ++i)
   {
@@ -45,7 +47,6 @@ void removeDeadEntities(Entity * entity)
     if (!entity->active)
     {
       m_entityManager.entities[i] = m_entityManager.entities[i + 1];
-      m_entityManager.entities[i].id = i;
       m_entityManager.total--;
     }
   }
@@ -61,49 +62,42 @@ void em_Update()
     m_entityManager.entities[m_entityManager.total++] = *entity;
   }
   m_entities_to_add = 0;
+  removeDeadEntities();
 
 }
 
-Entity * em_GetEntitiesByTag(const char * tag, size_t * size)
+Entity * em_GetEntitiesByTag(eLevelEntities tag)
 {
-  size_t count = 0;
-  Entity * max_entities = safe_malloc(sizeof(Entity) * MAX_ENTITIES);
+  m_passed_count = 0;
 
   for (int i = 0; i < m_entityManager.total; ++i)
   {
-    Entity * entity = &m_entityManager.entities[i];
-    if (strcmp(entity->tag, tag) == 0)
+    if (m_entityManager.entities[i].tag == tag)
     {
-      max_entities[count++] = *entity;
+      m_entityManager.entitiesToPass[m_passed_count++] = m_entityManager.entities[i];
     }
   }
-  *size = count;
-  Entity * entities = safe_malloc(sizeof(Entity) * count);
-  memcpy(entities, max_entities, count);
-  free(max_entities);
-  return entities;
+  return m_entityManager.entitiesToPass;
 
 }
 
-Entity * em_GetEntitiesById(int id1, int id2, size_t * size)
+Entity * em_GetEntitiesById(eEntitiesType id)
 {
-  size_t count = 0;
-  Entity * max_entities = safe_malloc(sizeof(Entity) * MAX_ENTITIES);
-  id2 = id2 > m_entityManager.total ? m_entityManager.total : id2;
+  m_passed_count = 0;
 
   for (int i = 0; i < m_entityManager.total; ++i)
   {
-    Entity * entity = &m_entityManager.entities[i];
-    if (entity->id >= id1 && entity->id <= id2)
+    if (m_entityManager.entities[i].id == id)
     {
-      max_entities[count++] = *entity;
+      m_entityManager.entitiesToPass[m_passed_count++] = m_entityManager.entities[i];
     }
   }
-  *size = count;
-  Entity * entities = safe_malloc(sizeof(Entity) * count);
-  memcpy(entities, max_entities, count);
-  free(max_entities);
-  return entities;
+  return m_entityManager.entitiesToPass;
+}
+
+size_t em_GetPassedCount()
+{
+  return m_passed_count;
 }
 
 Entity * em_GetEntities()
@@ -124,7 +118,6 @@ void em_Destroy()
     e = m_entityManager.entities + i;
     free(e->cShape);
     free(e->cTransform);
-    free(e->cCollision);
     free(e->cInput);
     free(e->cScore);
     free(e->cLifespan);
@@ -132,4 +125,5 @@ void em_Destroy()
   }
   free(m_entityManager.entities);
   free(m_entityManager.entitiesToAdd);
+  free(m_entityManager.entitiesToPass);
 }

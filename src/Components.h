@@ -13,6 +13,7 @@ typedef struct
 {
   Vec2 pos;
   Vec2 prevpos;
+  Vec2 scale;
   Vec2 vel;
   float angle;
 } CTransform;
@@ -28,16 +29,6 @@ typedef struct
   sfCircleShape * circle;
   sfRectangleShape * rect;
 } CShape;
-
-////////////////////////////////////////////////////////////
-/// \brief radius for circle collision
-/// 
-/// \param radius
-////////////////////////////////////////////////////////////
-typedef struct 
-{
-  float radius;
-} CCollision;
 
 ////////////////////////////////////////////////////////////
 /// \brief score for entity
@@ -87,7 +78,6 @@ CInput * com_CreateInput();
 
 CScore *  com_CreateScore(int initVal);
 
-CCollision * com_CreateCollision(float rad);
 
 CShape * com_CreateRectangle(Vec2 pos, float width, float height, sfColor FillColor);
 
