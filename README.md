@@ -1,2 +1,2 @@
-# 2D-Engine
-2D Game engine written using SFML
+# AIR PONG
+2D Game engine written using the C binding of SFML
