@@ -1,0 +1,4 @@
+-I
+./include/
+-I
+C:/Dev/CSFML-2.5.1/include

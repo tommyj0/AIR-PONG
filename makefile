@@ -1,3 +1,19 @@
-all:
-	gcc src/*.c -Isrc -g -Wall -Wextra -I C:/Dev/CSFML-2.5.1/include  -o bin/csfmlgame -L C:/Dev/CSFML-2.5.1/lib/gcc -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio && bin/csfmlgame
+CC=clang
+CFLAGS=-g -Wall -Wextra -std=c17
+BINS=game
+
+SFMLFLIBS=-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio 
+SFMLLINK=C:/Dev/CSFML-2.5.1/lib/msvc
+SFMLINC=C:/Dev/CSFML-2.5.1/include
+
+all: $(BINS)
+	
+game: 
+	$(CC) src/*.c $(CFLAGS) -I include -I $(SFMLINC) -L $(SFMLLINK) -o $@.exe $(SFMLFLIBS) 
+
+
+clean:
+	del game.*
+
+
 

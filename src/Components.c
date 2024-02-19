@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "Utils.h"
 
-CScore *  com_CreateScore(int initVal)
+CScore * com_CreateScore(int initVal)
 {
   CScore * score = safe_malloc(sizeof(CScore));
   score->score = initVal;
