@@ -1,8 +1,5 @@
 #pragma once
-#include "Vec2.h"
 #include "Components.h"
-#include <stdlib.h>
-#include <string.h>
 
 
 typedef enum 

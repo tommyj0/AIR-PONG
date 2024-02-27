@@ -21,7 +21,9 @@ typedef struct
 ////////////////////////////////////////////////////////////
 /// \brief shape for circle
 ///
-/// \param circle something
+/// \param shape ptr
+/// \param circle ptr
+/// \param rect ptr
 ////////////////////////////////////////////////////////////
 typedef struct 
 {
@@ -33,7 +35,7 @@ typedef struct
 ////////////////////////////////////////////////////////////
 /// \brief score for entity
 /// 
-/// \param score
+/// \param score - you'll never guess what this is
 ////////////////////////////////////////////////////////////
 typedef struct 
 {
@@ -44,7 +46,7 @@ typedef struct
 /// \brief lifespan tracker
 /// 
 /// \param total
-/// \param remaining
+/// \param remaining - decrement remaining until Entity dies
 ////////////////////////////////////////////////////////////
 typedef struct
 {
@@ -77,7 +79,6 @@ CTransform * com_CreateTransform(Vec2 pos, Vec2 vel, float angle);
 CInput * com_CreateInput();
 
 CScore *  com_CreateScore(int initVal);
-
 
 CShape * com_CreateRectangle(Vec2 pos, float width, float height, sfColor FillColor);
 

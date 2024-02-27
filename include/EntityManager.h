@@ -2,7 +2,7 @@
 #include "Entity.h"
 
 
-typedef struct
+typedef struct EntityManager
 {
   
   Entity * entities;

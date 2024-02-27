@@ -25,6 +25,7 @@ typedef struct
   BallConfig ballConfig;
   WindowConfig windowConfig;
 } Config;
+
 ////////////////////////////////////////////////////////////
 /// \brief main game loop
 /// 

@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include "Vec2.h"
 #include "Game.h"
-
+#include "Vec2.h"
 
 int main()
 {

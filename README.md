@@ -1,2 +1,5 @@
 # AIR PONG
-2D Game engine written using the C binding of SFML
+
+Simple PONG game using Time-of-Flight sensors as user input 
+
+Written using the C binding of SFML
