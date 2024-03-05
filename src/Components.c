@@ -1,12 +1,12 @@
 #include "Components.h"
 
-#include "Entity.h"
 #include "Utils.h"
 
 CScore* com_CreateScore(int initVal)
 {
   CScore* score = safe_malloc(sizeof(CScore));
   score->score = initVal;
+
   return score;
 }
 
@@ -20,6 +20,7 @@ CInput* com_CreateInput()
   input->shoot = false;
   input->canJump = true;
   input->canShoot = true;
+
   return input;
 }
 
@@ -31,6 +32,7 @@ CTransform* com_CreateTransform(Vec2 pos, Vec2 vel, float angle)
   transform->vel = vel;
   transform->scale = (Vec2){0};
   transform->angle = angle;
+
   return transform;
 }
 
@@ -43,6 +45,7 @@ CShape* com_CreateRectangle(Vec2 pos, float width, float height,
   sfRectangleShape_setSize(rect, (sfVector2f){width, height});
   sfRectangleShape_setFillColor(rect, FillColor);
   *shape = (CShape){(sfShape*)rect, 0, rect};
+
   return shape;
 }
 
@@ -66,5 +69,6 @@ CBoundingBox* com_CreateBounding(Vec2 size)
 {
   CBoundingBox* bounds = safe_malloc(sizeof(CBoundingBox));
   bounds->size = size;
+
   return bounds;
 }

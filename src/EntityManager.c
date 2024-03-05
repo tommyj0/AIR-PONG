@@ -19,14 +19,14 @@ static void Init()
   m_entityManager.entitiesToPass = safe_malloc(sizeof(Entity) * MAX_ENTITIES);
 }
 
-Entity* em_Add(eEntitiesType id, eLevelEntities tag)
+Entity * em_Add(eEntitiesType id, eLevelEntities tag)
 {
   if (m_entityManager.entities == NULL || m_entityManager.entitiesToAdd == NULL)
   {
     Init();
   }
   Entity e;
-  Entity* entity = &e;
+  Entity * entity = &e;
   entity->active = true;
   entity->cTransform = NULL;
   entity->cShape = NULL;
@@ -44,7 +44,7 @@ static void RemoveDeadEntities()
 {
   for (int i = 0; i < m_entityManager.total; ++i)
   {
-    Entity* entity = &m_entityManager.entities[i];
+    Entity * entity = &m_entityManager.entities[i];
     if (!entity->active)
     {
       m_entityManager.entities[i] = m_entityManager.entities[i + 1];
@@ -58,7 +58,7 @@ void em_Update()
 {
   for (size_t i = 0; i < m_entities_to_add; ++i)
   {
-    Entity* entity = &m_entityManager.entitiesToAdd[i];
+    Entity * entity = &m_entityManager.entitiesToAdd[i];
     entity->id = m_entityManager.total;
     m_entityManager.entities[m_entityManager.total++] = *entity;
   }
@@ -66,7 +66,7 @@ void em_Update()
   RemoveDeadEntities();
 }
 
-Entity* em_GetEntitiesByTag(eLevelEntities tag)
+Entity * em_GetEntitiesByTag(eLevelEntities tag)
 {
   m_passed_count = 0;
 
@@ -81,7 +81,7 @@ Entity* em_GetEntitiesByTag(eLevelEntities tag)
   return m_entityManager.entitiesToPass;
 }
 
-Entity* em_GetEntitiesById(eEntitiesType id)
+Entity * em_GetEntitiesById(eEntitiesType id)
 {
   m_passed_count = 0;
 
@@ -101,7 +101,7 @@ size_t em_GetPassedCount()
   return m_passed_count;
 }
 
-Entity* em_GetEntities()
+Entity * em_GetEntities()
 {
   return m_entityManager.entities;
 }
@@ -113,7 +113,7 @@ int em_GetTotalEntities()
 
 void em_Destroy()
 {
-  Entity* e;
+  Entity * e;
   for (int i = 0; i < m_entityManager.total; ++i)
   {
     e = m_entityManager.entities + i;

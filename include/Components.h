@@ -1,10 +1,10 @@
 #pragma once
-#include "Vec2.h"
 #include "SFML/Graphics.h"
+#include "Vec2.h"
 
 ////////////////////////////////////////////////////////////
 /// \brief describes movement and rotation of an entity
-/// 
+///
 /// \param pos 2D position
 /// \param vel 2D velocity
 /// \param angle float angle in rad
@@ -25,7 +25,7 @@ typedef struct
 /// \param circle ptr
 /// \param rect ptr
 ////////////////////////////////////////////////////////////
-typedef struct 
+typedef struct
 {
   sfShape * shape;
   sfCircleShape * circle;
@@ -34,17 +34,17 @@ typedef struct
 
 ////////////////////////////////////////////////////////////
 /// \brief score for entity
-/// 
+///
 /// \param score - you'll never guess what this is
 ////////////////////////////////////////////////////////////
-typedef struct 
+typedef struct
 {
   int score;
 } CScore;
 
 ////////////////////////////////////////////////////////////
 /// \brief lifespan tracker
-/// 
+///
 /// \param total
 /// \param remaining - decrement remaining until Entity dies
 ////////////////////////////////////////////////////////////
@@ -56,9 +56,9 @@ typedef struct
 
 ////////////////////////////////////////////////////////////
 /// \brief input of entity
-/// 
+///
 ////////////////////////////////////////////////////////////
-typedef struct 
+typedef struct
 {
   bool up;
   bool down;
@@ -69,7 +69,7 @@ typedef struct
   bool canJump;
 } CInput;
 
-typedef struct   
+typedef struct
 {
   Vec2 size;
 } CBoundingBox;
@@ -78,10 +78,12 @@ CTransform * com_CreateTransform(Vec2 pos, Vec2 vel, float angle);
 
 CInput * com_CreateInput();
 
-CScore *  com_CreateScore(int initVal);
+CScore * com_CreateScore(int initVal);
 
-CShape * com_CreateRectangle(Vec2 pos, float width, float height, sfColor FillColor);
+CShape * com_CreateRectangle(Vec2 pos, float width, float height,
+                             sfColor FillColor);
 
-CShape * com_CreateCircle(Vec2 pos, float radius, int points, sfColor FillColor, float thickness, sfColor OutColor);
+CShape * com_CreateCircle(Vec2 pos, float radius, int points, sfColor FillColor,
+                          float thickness, sfColor OutColor);
 
 CBoundingBox * com_CreateBounding(Vec2 size);

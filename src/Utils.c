@@ -3,16 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void* safe_malloc(size_t size)
+void * safe_malloc(size_t size)
 {
-  void* p = malloc(size);
-  if (p == NULL)
-  {
+  void * p = malloc(size);
+  if (p == NULL) {
     fprintf(stderr, "Fatal: failed to allocate %zu bytes.\n", size);
     abort();
-  }
-  else
-  {
+  } else {
     return p;
   }
 }

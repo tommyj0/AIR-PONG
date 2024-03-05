@@ -10,14 +10,14 @@
 #include "Physics.h"
 #include "ini.h"
 
-sfRenderWindow* m_window;
+sfRenderWindow * m_window;
 size_t m_currentFrame = 0;
 bool m_running = true;
 bool m_reset = true;
 Entity *m_player, *m_player2;
 const float width = 800, height = 600;
 sfText *fps_counter, *score1, *score2;
-sfFont* font;
+sfFont * font;
 
 sfColor m_white = {255, 255, 255, 255};
 sfColor m_black = {0, 0, 0, 255};
@@ -38,6 +38,21 @@ static void Init();
 static void Collision();
 static int ReadConfig();
 static void UpdateText();
+static void ResetBall(int dir);
+
+extern void g_Run()
+{
+  Init();
+  while (m_running) {
+    Render();
+    Movement();
+    Collision();
+    UserInput();
+    UpdateText();
+    m_currentFrame++;
+  }
+  Destroy();
+}
 
 static void Init()
 {
@@ -65,69 +80,30 @@ static void Init()
   em_Update();
 }
 
-void g_Run()
-{
-  Init();
-  while (m_running)
-  {
-    Render();
-    Movement();
-    Collision();
-    UserInput();
-    UpdateText();
-    m_currentFrame++;
-  }
-  Destroy();
-}
-
-static void ResetBall(int dir)
-{
-  Entity* b = em_GetEntitiesByTag(BALL);
-  b->cTransform->pos = (Vec2){width / 2, height / 2};
-  b->cTransform->vel = dir == 1 ? (Vec2){m_config.ballConfig.speed, 0}
-                                : (Vec2){-m_config.ballConfig.speed, 0};
-}
-
-static int INIHandler(void* user, const char* section, const char* name,
-                      const char* value)
+static int INIHandler(void * user __attribute__((unused)), const char * section,
+                      const char * name, const char * value)
 {
 #define MATCH_S(s) strcmp(section, s) == 0
 #define MATCH_N(n) strcmp(name, n) == 0
-  if (MATCH_S("window"))
-  {
-    if (MATCH_N("height"))
-    {
+  if (MATCH_S("window")) {
+    if (MATCH_N("height")) {
       m_config.windowConfig.height = atoi(value);
-    }
-    else if (MATCH_N("width"))
-    {
+    } else if (MATCH_N("width")) {
       m_config.windowConfig.width = atoi(value);
     }
-  }
-  else if (MATCH_S("paddle"))
-  {
-    if (MATCH_N("height"))
-    {
+  } else if (MATCH_S("paddle")) {
+    if (MATCH_N("height")) {
       m_config.paddleConfig.height = atoi(value);
-    }
-    else if (MATCH_N("width"))
-    {
+    } else if (MATCH_N("width")) {
       m_config.paddleConfig.width = atoi(value);
     }
-  }
-  else if (MATCH_S("ball"))
-  {
-    if (MATCH_N("radius"))
-    {
+  } else if (MATCH_S("ball")) {
+    if (MATCH_N("radius")) {
       m_config.ballConfig.radius = atoi(value);
-    }
-    else if (MATCH_N("speed"))
-    {
+    } else if (MATCH_N("speed")) {
       m_config.ballConfig.speed = atof(value);
     }
-  }
-  else
-  {
+  } else {
     goto readerr;
   }
   return 1;
@@ -138,8 +114,7 @@ readerr:
 
 static int ReadConfig()
 {
-  if (ini_parse("config.ini", INIHandler, NULL) < 0)
-  {
+  if (ini_parse("config.ini", INIHandler, NULL) < 0) {
     perror("Can't load 'config.ini'");
     return 1;
   }
@@ -159,8 +134,7 @@ static void UpdateText()
   clock_t curr;
   static clock_t last = 0;
   float fps = 0;
-  if (m_currentFrame % 60 == 0)
-  {
+  if (m_currentFrame % 60 == 0) {
     // currentTime = sfClock_getElapsedTime(clock);
     curr = clock();
     fps = 60.f / (curr - last);
@@ -202,7 +176,7 @@ static void spawnPlayer()
 
 static void spawnBall()
 {
-  Entity* b = em_Add(DYNAMIC, BALL);
+  Entity * b = em_Add(DYNAMIC, BALL);
   b->cTransform =
       com_CreateTransform((Vec2){width / 2, height / 2},
                           (Vec2){m_config.ballConfig.speed, 0}, 0.0f);
@@ -216,14 +190,12 @@ static void spawnBall()
 static void Render()
 {
   sfRenderWindow_clear(m_window, m_dgrey);
-  Entity* m_entities = em_GetEntities();
-  Entity* e;
+  Entity * m_entities = em_GetEntities();
+  Entity * e;
 
-  for (int i = 0; i < em_GetTotalEntities(); ++i)
-  {
+  for (int i = 0; i < em_GetTotalEntities(); ++i) {
     e = m_entities + i;
-    if (e->cShape == NULL || e->cTransform == NULL)
-    {
+    if (e->cShape == NULL || e->cTransform == NULL) {
       continue;
     }
     sfShape_setPosition(e->cShape->shape, (sfVector2f){e->cTransform->pos.x,
@@ -245,35 +217,28 @@ static void Destroy()
 
 static void Movement()
 {
-  Entity* m_entities = em_GetEntities();
-  Entity* e;
+  Entity * m_entities = em_GetEntities();
+  Entity * e;
 
-  for (int i = 0; i < em_GetTotalEntities(); ++i)
-  {
+  for (int i = 0; i < em_GetTotalEntities(); ++i) {
     e = m_entities + i;
-    if (e->cTransform == NULL)
-    {
+    if (e->cTransform == NULL) {
       continue;
     }
-    if (e->cInput == NULL)
-    {
+    if (e->cInput == NULL) {
       goto transforms;
     }
     e->cTransform->vel = (Vec2){0, 0};
-    if (e->cInput->up)
-    {
+    if (e->cInput->up) {
       e->cTransform->vel.y = -5;
     }
-    if (e->cInput->left)
-    {
+    if (e->cInput->left) {
       e->cTransform->vel.x = -5;
     }
-    if (e->cInput->down)
-    {
+    if (e->cInput->down) {
       e->cTransform->vel.y = 5;
     }
-    if (e->cInput->right)
-    {
+    if (e->cInput->right) {
       e->cTransform->vel.x = 5;
     }
   transforms:
@@ -284,60 +249,47 @@ static void Movement()
 
 static void Collision()
 {
-  Entity* m_entities = em_GetEntities();
-  Entity* e;
-  Entity* ball = em_GetEntitiesByTag(BALL);
-  if (ball == NULL)
-  {
+  Entity * m_entities = em_GetEntities();
+  Entity * e;
+  Entity * ball = em_GetEntitiesByTag(BALL);
+  if (ball == NULL) {
     return;
   }
-  if (ball->cTransform == NULL || ball->cBoundingBox == NULL)
-  {
+  if (ball->cTransform == NULL || ball->cBoundingBox == NULL) {
     return;
   }
 
   // ball hitting top/bottom
-  if (ball->cTransform->pos.y <= 0)
-  {
+  if (ball->cTransform->pos.y <= 0) {
     ball->cTransform->vel.y = fabs(ball->cTransform->vel.y);
-  }
-  else if (ball->cTransform->pos.y + ball->cBoundingBox->size.y >=
-           m_config.windowConfig.height)
-  {
+  } else if (ball->cTransform->pos.y + ball->cBoundingBox->size.y >=
+             m_config.windowConfig.height) {
     ball->cTransform->vel.y = -fabs(ball->cTransform->vel.y);
   }
 
-  if (ball->cTransform->pos.x + ball->cBoundingBox->size.x <= 0)
-  {
+  if (ball->cTransform->pos.x + ball->cBoundingBox->size.x <= 0) {
     m_player2->cScore->score++;
     ResetBall(-1);
-  }
-  else if (ball->cTransform->pos.x >= m_config.windowConfig.width)
-  {
+  } else if (ball->cTransform->pos.x >= m_config.windowConfig.width) {
     m_player->cScore->score++;
     ResetBall(1);
   }
 
-  for (int i = 0; i < em_GetTotalEntities(); ++i)
-  {
+  for (int i = 0; i < em_GetTotalEntities(); ++i) {
     e = m_entities + i;
-    if (e->cBoundingBox == NULL || e->cTransform == NULL)
-    {
+    if (e->cBoundingBox == NULL || e->cTransform == NULL) {
       continue;
     }
-    if (ent_GetTag(e) != BALL)
-    {
+    if (ent_GetTag(e) != BALL) {
       // paddle hitting top/bottom
       if (e->cTransform->pos.y < 0 ||
           e->cTransform->pos.y + e->cBoundingBox->size.y >=
-              m_config.windowConfig.height)
-      {
+              m_config.windowConfig.height) {
         e->cTransform->pos = e->cTransform->prevpos;
       }
       // ball hitting paddle
       Vec2 overlap = phy_GetOverlap(ball, e);
-      if (overlap.x > 0 || overlap.y > 0)
-      {
+      if (overlap.x > 0 || overlap.y > 0) {
         float ball_mid =
             ball->cTransform->pos.y + ball->cBoundingBox->size.y / 2;
         float paddle_mid = e->cTransform->pos.y + e->cBoundingBox->size.y / 2;
@@ -354,31 +306,32 @@ static void Collision()
   }
 }
 
+static void ResetBall(int dir)
+{
+  Entity * b = em_GetEntitiesByTag(BALL);
+  b->cTransform->pos = (Vec2){width / 2, height / 2};
+  b->cTransform->vel = dir == 1 ? (Vec2){m_config.ballConfig.speed, 0}
+                                : (Vec2){-m_config.ballConfig.speed, 0};
+}
+
 static void UserInput()
 {
   sfEvent event;
-  while (sfRenderWindow_pollEvent(m_window, &event))
-  {
-    if (event.type == sfEvtClosed)
-    {
+  while (sfRenderWindow_pollEvent(m_window, &event)) {
+    if (event.type == sfEvtClosed) {
       m_running = false;
     }
 
-    if (event.type == sfEvtMouseButtonPressed)
-    {
-      if (event.mouseButton.button == sfMouseLeft)
-      {
+    if (event.type == sfEvtMouseButtonPressed) {
+      if (event.mouseButton.button == sfMouseLeft) {
         // printf("Left mouse button pressed\n");
       }
-      if (event.mouseButton.button == sfMouseRight)
-      {
+      if (event.mouseButton.button == sfMouseRight) {
         // printf("Right mouse button pressed\n");
       }
     }
-    if (event.type == sfEvtKeyPressed)
-    {
-      switch (event.key.code)
-      {
+    if (event.type == sfEvtKeyPressed) {
+      switch (event.key.code) {
       case sfKeyW:
         // printf("W pressed\n");
         m_player->cInput->up = true;
@@ -408,10 +361,8 @@ static void UserInput()
       }
     }
 
-    if (event.type == sfEvtKeyReleased)
-    {
-      switch (event.key.code)
-      {
+    if (event.type == sfEvtKeyReleased) {
+      switch (event.key.code) {
       case sfKeyW:
         // printf("W released\n");
         m_player->cInput->up = false;

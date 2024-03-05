@@ -17,12 +17,12 @@ Vec2 Vec2_mul(Vec2 a, float b)
   Vec2 result = {a.x * b, a.y * b};
   return result;
 }
-  
-Vec2 Vec2_div(Vec2 a, float b)  
+
+Vec2 Vec2_div(Vec2 a, float b)
 {
   Vec2 result = {a.x / b, a.y / b};
   return result;
-} 
+}
 
 float Vec2_mag(Vec2 a)
 {
@@ -63,10 +63,10 @@ bool Vec2_neq(Vec2 a, Vec2 b)
 
 Vec2 Vec2_setRotate(Vec2 a, float angle)
 {
-  return Vec2_mul((Vec2) { cos(angle), sin(angle) }, Vec2_mag(a));
+  return Vec2_mul((Vec2){cos(angle), sin(angle)}, Vec2_mag(a));
 }
 
 Vec2 Vec2_Polar(float mag, float angle)
 {
-  return (Vec2) { mag * cosf(angle), mag * sinf(angle) };
+  return (Vec2){mag * cosf(angle), mag * sinf(angle)};
 }

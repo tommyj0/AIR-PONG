@@ -1,8 +1,7 @@
 #pragma once
 #include "Components.h"
 
-
-typedef enum 
+typedef enum
 {
   PLAYER,
   PLAYER2,
@@ -29,7 +28,7 @@ typedef enum
   LAST
 } eLevelEntities;
 
-typedef enum 
+typedef enum
 {
   DYNAMIC,
   TILE,
@@ -46,12 +45,11 @@ typedef struct
   CScore* cScore;
   CLifespan* cLifespan;
   CInput* cInput;
-  CBoundingBox * cBoundingBox;
+  CBoundingBox* cBoundingBox;
 } Entity;
 
-void ent_Destroy(Entity * a);
+void ent_Destroy(Entity* a);
 
-eEntitiesType ent_GetId(Entity * a);
+eEntitiesType ent_GetId(Entity* a);
 
-eLevelEntities ent_GetTag(Entity * a);
-
+eLevelEntities ent_GetTag(Entity* a);
