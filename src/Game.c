@@ -10,23 +10,22 @@
 #include "Physics.h"
 #include "ini.h"
 
-sfRenderWindow * m_window;
-size_t m_currentFrame = 0;
-bool m_running = true;
-bool m_reset = true;
-Entity *m_player, *m_player2;
-const float width = 800, height = 600;
-sfText *fps_counter, *score1, *score2;
-sfFont * font;
+static sfRenderWindow * m_window;
+static size_t m_currentFrame = 0;
+static bool m_running = true;
+static Entity *m_player, *m_player2;
+static const float width = 800, height = 600;
+static sfText *fps_counter, *score1, *score2;
+static sfFont * font;
 
-sfColor m_white = {255, 255, 255, 255};
-sfColor m_black = {0, 0, 0, 255};
-sfColor m_red = {255, 0, 0, 255};
-sfColor m_green = {0, 255, 0, 255};
-sfColor m_blue = {0, 0, 255, 255};
-sfColor m_dgrey = {50, 50, 50, 255};
+__attribute__((unused)) static sfColor m_white = {255, 255, 255, 255};
+__attribute__((unused)) static sfColor m_black = {0, 0, 0, 255};
+__attribute__((unused)) static sfColor m_red = {255, 0, 0, 255};
+__attribute__((unused)) static sfColor m_green = {0, 255, 0, 255};
+__attribute__((unused)) static sfColor m_blue = {0, 0, 255, 255};
+__attribute__((unused)) static sfColor m_dgrey = {50, 50, 50, 255};
 
-Config m_config;
+static Config m_config;
 
 static void Render();
 static void Destroy();
@@ -40,7 +39,7 @@ static int ReadConfig();
 static void UpdateText();
 static void ResetBall(int dir);
 
-extern void g_Run()
+void g_Run()
 {
   Init();
   while (m_running) {
@@ -80,11 +79,12 @@ static void Init()
   em_Update();
 }
 
-static int INIHandler(void * user __attribute__((unused)), const char * section,
+static int INIHandler(__attribute__((unused)) void * user, const char * section,
                       const char * name, const char * value)
 {
 #define MATCH_S(s) strcmp(section, s) == 0
 #define MATCH_N(n) strcmp(name, n) == 0
+
   if (MATCH_S("window")) {
     if (MATCH_N("height")) {
       m_config.windowConfig.height = atoi(value);
@@ -104,12 +104,9 @@ static int INIHandler(void * user __attribute__((unused)), const char * section,
       m_config.ballConfig.speed = atof(value);
     }
   } else {
-    goto readerr;
+    return 0;
   }
   return 1;
-
-readerr:
-  return 0;
 }
 
 static int ReadConfig()
@@ -118,6 +115,7 @@ static int ReadConfig()
     perror("Can't load 'config.ini'");
     return 1;
   }
+
   printf(
       "Config loaded from 'test.ini':\nWindow: width=%d, height=%d\nBall: "
       "radius=%d, speed=%.2f\nPaddle: width=%d, height=%d\n",
@@ -135,7 +133,6 @@ static void UpdateText()
   static clock_t last = 0;
   float fps = 0;
   if (m_currentFrame % 60 == 0) {
-    // currentTime = sfClock_getElapsedTime(clock);
     curr = clock();
     fps = 60.f / (curr - last);
     fps *= 1e3;
@@ -322,14 +319,12 @@ static void UserInput()
       m_running = false;
     }
 
-    if (event.type == sfEvtMouseButtonPressed) {
-      if (event.mouseButton.button == sfMouseLeft) {
-        // printf("Left mouse button pressed\n");
-      }
-      if (event.mouseButton.button == sfMouseRight) {
-        // printf("Right mouse button pressed\n");
-      }
-    }
+    // if (event.type == sfEvtMouseButtonPressed) {
+    // if (event.mouseButton.button == sfMouseLeft) {
+    // }
+    // if (event.mouseButton.button == sfMouseRight) {
+    // }
+    // }
     if (event.type == sfEvtKeyPressed) {
       switch (event.key.code) {
       case sfKeyW:

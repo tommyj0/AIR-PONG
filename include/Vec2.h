@@ -1,10 +1,9 @@
 #pragma once
-#define _USE_MATH_DEFINES
-#include <math.h>
 #define PI 3.14159f
+#include <math.h>
 #include <stdbool.h>
 
-typedef struct 
+typedef struct
 {
   float x;
   float y;

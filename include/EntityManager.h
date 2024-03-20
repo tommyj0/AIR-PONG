@@ -33,7 +33,7 @@ Entity * em_GetEntitiesByTag(eLevelEntities tag);
 Entity * em_GetEntitiesById(eEntitiesType id);
 
 ////////////////////////////////////////////////////////////
-/// \brief returns array of all entities
+/// \brief returns array with all entities
 /// 
 ////////////////////////////////////////////////////////////
 Entity * em_GetEntities();
@@ -46,7 +46,7 @@ int em_GetTotalEntities();
 
 ////////////////////////////////////////////////////////////
 /// \brief returns number of entities passed by one of the
-/// Get...By... functions
+/// GetEntitiesBy... functions
 /// 
 ////////////////////////////////////////////////////////////
 size_t em_GetPassedCount();
