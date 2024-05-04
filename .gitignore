@@ -23,7 +23,6 @@
 *.lo
 
 # Shared objects (inc. Windows DLLs)
-*.dll
 *.so
 *.so.*
 *.dylib
@@ -46,7 +45,6 @@
 *.vcxproj.user
 *.vcxproj.filters
 *.sln
-bin/
 x64/
 .vs/
 .clang*
