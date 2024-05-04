@@ -59,6 +59,7 @@ CBoundingBox * com_CreateBounding(Vec2 size)
 {
   CBoundingBox * bounds = safe_malloc(sizeof(CBoundingBox));
   *bounds = (CBoundingBox){.size = size};
+  bounds->size = size;
 
   return bounds;
 }

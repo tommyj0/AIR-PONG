@@ -14,3 +14,4 @@ eLevelEntities ent_GetTag(Entity * a)
 {
   return a->tag;
 }
+

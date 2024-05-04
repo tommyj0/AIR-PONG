@@ -8,14 +8,17 @@
 
 #include "EntityManager.h"
 #include "Physics.h"
+#include "SFML/Graphics/Text.h"
+#include "SFML/System/Vector2.h"
 #include "ini.h"
 
 static sfRenderWindow * m_window;
 static size_t m_currentFrame = 0;
 static bool m_running = true;
+static bool m_paused = false;
 static Entity *m_player, *m_player2;
 static const float width = 800, height = 600;
-static sfText *fps_counter, *score1, *score2;
+static sfText *fps_counter, *score1, *score2, *paused_text;
 static sfFont * font;
 
 __attribute__((unused)) static sfColor m_white = {255, 255, 255, 255};
@@ -38,16 +41,19 @@ static void Collision();
 static int ReadConfig();
 static void UpdateText();
 static void ResetBall(int dir);
+static void setPaused(bool paused);
 
 void g_Run()
 {
   Init();
   while (m_running) {
     Render();
-    Movement();
     Collision();
     UserInput();
     UpdateText();
+    if (!m_paused) {
+      Movement();
+    }
     m_currentFrame++;
   }
   Destroy();
@@ -63,16 +69,20 @@ static void Init()
   fps_counter = sfText_create();
   score1 = sfText_create();
   score2 = sfText_create();
+  paused_text = sfText_create();
   sfText_setFont(fps_counter, font);
   sfText_setFont(score1, font);
   sfText_setFont(score2, font);
+  sfText_setFont(paused_text, font);
   sfText_setCharacterSize(score1, 60);
   sfText_setCharacterSize(score2, 60);
+  sfText_setCharacterSize(paused_text, 120);
   sfText_setPosition(score1, (sfVector2f){32, 0});
   sfText_setPosition(score2, (sfVector2f){width - 64, 0});
   sfText_setPosition(
       fps_counter,
       (sfVector2f){width - 200, height - sfText_getCharacterSize(fps_counter)});
+  sfText_setPosition(paused_text, (sfVector2f){width / 2, height / 2});
   sfRenderWindow_setFramerateLimit(m_window, 60);
   spawnBall();
   spawnPlayer();
@@ -145,6 +155,16 @@ static void UpdateText()
   sfText_setString(score1, buf);
   snprintf(buf, sizeof(buf), "%d", m_player2->cScore->score);
   sfText_setString(score2, buf);
+  if (m_paused) {
+    sfText_setString(paused_text, "PAUSED");
+  } else {
+    sfText_setString(paused_text, "");
+  }
+}
+
+static void setPaused(bool paused)
+{
+  m_paused = paused;
 }
 
 static void spawnPlayer()
@@ -318,13 +338,6 @@ static void UserInput()
     if (event.type == sfEvtClosed) {
       m_running = false;
     }
-
-    // if (event.type == sfEvtMouseButtonPressed) {
-    // if (event.mouseButton.button == sfMouseLeft) {
-    // }
-    // if (event.mouseButton.button == sfMouseRight) {
-    // }
-    // }
     if (event.type == sfEvtKeyPressed) {
       switch (event.key.code) {
       case sfKeyW:
@@ -349,7 +362,7 @@ static void UserInput()
         break;
       case sfKeySpace:
         // printf("Space pressed\n");
-        // setPaused(!m_paused);
+        setPaused(!m_paused);
         break;
       default:
         break;
