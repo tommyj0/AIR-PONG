@@ -1,6 +1,8 @@
 #pragma once
 #include "SFML/Graphics.h"
 
+#include "stdint.h"
+
 typedef struct
 {
   int width;

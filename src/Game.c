@@ -70,6 +70,7 @@ static void Init()
   score1 = sfText_create();
   score2 = sfText_create();
   paused_text = sfText_create();
+
   sfText_setFont(fps_counter, font);
   sfText_setFont(score1, font);
   sfText_setFont(score2, font);
@@ -171,7 +172,7 @@ static void spawnPlayer()
 {
   m_player = em_Add(DYNAMIC, PLAYER);
   m_player->cScore = com_CreateScore(0);
-  m_player->cTransform = com_CreateTransform((Vec2){0, 0}, (Vec2){0, 0}, 0);
+  m_player->cTransform = com_CreateTransform((Vec2){0,height/2 - m_config.paddleConfig.height/2 }, (Vec2){0, 0}, 0);
   m_player->cInput = com_CreateInput();
   m_player->cShape =
       com_CreateRectangle((Vec2){0, 0}, m_config.paddleConfig.width,
@@ -182,7 +183,7 @@ static void spawnPlayer()
   m_player2 = em_Add(DYNAMIC, PLAYER2);
   m_player2->cScore = com_CreateScore(0);
   m_player2->cTransform = com_CreateTransform(
-      (Vec2){width - m_config.paddleConfig.width, 0}, (Vec2){0, 0}, 0);
+      (Vec2){width - m_config.paddleConfig.width, height/2 - m_config.paddleConfig.height/2}, (Vec2){0, 0}, 0);
   m_player2->cInput = com_CreateInput();
   m_player2->cShape =
       com_CreateRectangle((Vec2){0, 0}, m_config.paddleConfig.width,
@@ -237,6 +238,7 @@ static void Movement()
   Entity * m_entities = em_GetEntities();
   Entity * e;
 
+  int32_t entity_velocity = 7;
   for (int i = 0; i < em_GetTotalEntities(); ++i) {
     e = m_entities + i;
     if (e->cTransform == NULL) {
@@ -246,17 +248,18 @@ static void Movement()
       goto transforms;
     }
     e->cTransform->vel = (Vec2){0, 0};
+
     if (e->cInput->up) {
-      e->cTransform->vel.y = -5;
+      e->cTransform->vel.y = -entity_velocity;
     }
     if (e->cInput->left) {
-      e->cTransform->vel.x = -5;
+      e->cTransform->vel.x = -entity_velocity;
     }
     if (e->cInput->down) {
-      e->cTransform->vel.y = 5;
+      e->cTransform->vel.y = entity_velocity;
     }
     if (e->cInput->right) {
-      e->cTransform->vel.x = 5;
+      e->cTransform->vel.x = entity_velocity;
     }
   transforms:
     e->cTransform->prevpos = e->cTransform->pos;
