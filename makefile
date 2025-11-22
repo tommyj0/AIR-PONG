@@ -1,24 +1,21 @@
 CC=clang
-CFLAGS=-g -Wall -Wextra -std=c17
+CFLAGS= -g -Wall -Wextra -std=c99 -lm
 BUILD_DIR:=bin
 RM:=rm
 OUTPUT_NAME:=PONG
 
-ifeq ($(OS), Windows_NT)
-	OUTPUT_PATH:=$(BUILD_DIR)\$(OUTPUT_NAME)
-	OUTPUT:=$(OUTPUT_PATH).exe
-	RM:=del
-else
-	OUTPUT_PATH:=$(BUILD_DIR)/$(OUTPUT_NAME)
-	OUTPUT:=$(OUTPUT_PATH)
-endif
+OUTPUT_PATH:=$(BUILD_DIR)/$(OUTPUT_NAME)
+OUTPUT:=$(OUTPUT_PATH)
 
 
+SFMLDIR=./ext/CSFML
 SFMLFLIBS=-lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio
-SFMLLINK=C:/Dev/CSFML-2.5.1/lib/msvc
-SFMLINC=C:/Dev/CSFML-2.5.1/include
+SFMLLINK=$(SFMLDIR)/build/lib
+SFMLINC=$(SFMLDIR)/include
 
-BINS=$(OUTPUT) clear_debug 
+export LD_LIBRARY_PATH := $(SFMLLINK)
+
+BINS=$(OUTPUT)
 DEBUG_BINS=$(OUTPUT)
 
 build: $(BINS)
@@ -26,15 +23,12 @@ build: $(BINS)
 debug: $(DEBUG_BINS)
 	
 $(OUTPUT): 
+	mkdir bin
 	$(CC) src/*.c $(CFLAGS) -I inc -I $(SFMLINC) -L $(SFMLLINK) -o $@ $(SFMLFLIBS) 
-
-clear_debug:
-	$(RM) $(OUTPUT_PATH).pdb $(OUTPUT_PATH).ilk
-
-run:
-	.\$(OUTPUT)
+run: build
+	./$(OUTPUT)
 
 clean:
-	$(RM) $(OUTPUT_PATH)*
+	$(RM) $(BUILD_DIR)
 
 

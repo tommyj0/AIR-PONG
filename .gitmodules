@@ -1,0 +1,3 @@
+[submodule "ext/CSFML"]
+	path = ext/CSFML
+	url = https://github.com/SFML/CSFML.git
