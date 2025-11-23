@@ -19,18 +19,15 @@ Will add ToF input eventually.
 
 ## Run
 
-populate submodule ext/CSFML, then build shared objects as usual:
+populate submodule ext/CSFML:
 
 ```bash
-cd ext/CSFML
+git submodule update --init
+```
+
+Run CMake as usual:
+```bash
 cmake -B build -S .
 cmake --build build
+./build/PONG
 ```
-
-Main project is just a makefile:
-
-```bash
-make run
-```
-
-

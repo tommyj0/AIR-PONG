@@ -35,28 +35,15 @@ include_directories(
     )
 
 # --------------------------------------------------------------------
-# Linker Flags
-# --------------------------------------------------------------------
-# Add custom linker flags if needed
-
-## set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--as-needed")
-
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lcsfml-graphics")
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lcsfml-window")
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lcsfml-system")
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lcsfml-audio")
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L .")
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L ${CSFML_DIR}/build/lib")
-  
-
-# --------------------------------------------------------------------
 # External Libraries
 # --------------------------------------------------------------------
-link_directories(${CSFML_DIR}/build/lib)
+# link_directories(${CSFML_DIR}/build/lib)
 
-# Example manual linking:
-set(CMAKE_PREFIX_PATH "${CSFML_DIR}/build")
+# # Example manual linking:
+# set(CMAKE_PREFIX_PATH "${CSFML_DIR}/build")
 set(LIBS m csfml-graphics csfml-window csfml-system csfml-audio)
+
+add_subdirectory(ext/CSFML)
 
 # --------------------------------------------------------------------
 # Targets
@@ -69,12 +56,6 @@ target_link_libraries(${PROJECT_NAME}
         ${LIBS}
 )
 
-# Optional: set compile options per target
-target_compile_options(${PROJECT_NAME}
-    PRIVATE
-      -g 
-      #-DNORMALUNIX -DLINUX # -DUSEASM 
-)
 
 # Optional: specify include directories per target
 target_include_directories(${PROJECT_NAME}
@@ -82,11 +63,25 @@ target_include_directories(${PROJECT_NAME}
         ${INCLUDE_DIR}
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    BUILD_RPATH "${CSFML_DIR}/build/lib"
-    INSTALL_RPATH "${CSFML_DIR}/build/lib"
-)
+# --------------------------------------------------------------------
+# Compiler Flags
+# --------------------------------------------------------------------
 
+target_compile_options(${PROJECT_NAME} PRIVATE
+    -g 
+    -Wall
+    -Wextra
+    -O2
+    #-DNORMALUNIX -DLINUX # -DUSEASM 
+)
+# --------------------------------------------------------------------
+# Linker Flags
+# --------------------------------------------------------------------
+# Add custom linker flags if needed
+
+target_link_options(${PROJECT_NAME} PRIVATE
+
+)
 # --------------------------------------------------------------------
 # Installation (optional)
 # --------------------------------------------------------------------
