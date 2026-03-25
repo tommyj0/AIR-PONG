@@ -9,6 +9,7 @@ project(PONG LANGUAGES C)
 # Configuration
 # --------------------------------------------------------------------
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Build type: Debug / Release
 if(NOT CMAKE_BUILD_TYPE)
@@ -20,7 +21,7 @@ endif()
 # --------------------------------------------------------------------
 # Source and include directories
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
-set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/inc)
+set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(CSFML_DIR ${CMAKE_SOURCE_DIR}/ext/CSFML)
 
 # Collect all .c or .cpp files automatically
